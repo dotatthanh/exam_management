@@ -1,0 +1,39 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+    &-toggle {
+        cursor: pointer;
+    }
+    &-toggle::after {
+        content: none;
+    }
+    &-menu {
+        display: none;
+        position: absolute;
+        top: 130%;
+        left: -149px;
+        background-color: var(--dropdown-bg-color);
+        min-width: 160px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        animation-duration: 1.25s;
+        padding: 0;
+        color: #000;
+        &::before {
+            content: "";
+            position: absolute;
+            top: -19px;
+            border: 12.5px solid;
+            border-color: transparent transparent var(--dropdown-bg-color)
+                transparent;
+            right: 1px;
+        }
+        & > li > a {
+            padding: 12px 20px;
+            font-size: 1.4rem;
+        }
+    }
+
+    &:hover .dropdown-menu {
+        display: block;
+    }
+}

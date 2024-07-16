@@ -1,0 +1,138 @@
+$margin-main: 32px;
+
+%flexItemCenter {
+    display: flex;
+    align-items: center;
+}
+.icon-fonts {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7493%)
+        hue-rotate(79deg) brightness(101%) contrast(101%);
+}
+.container {
+    --grid-gutter-x: 0;
+    --grid-gutter-y: 0;
+}
+.content {
+    display: flex;
+
+    &__inner {
+        flex: 4;
+        overflow: hidden;
+    }
+}
+.header {
+    position: fixed;
+    width: 83%;
+    z-index: 10;
+    transition: background-color 0.2s;
+
+    &.scrolled {
+        background-color: var(--bg-color);
+    }
+}
+.banner {
+    position: relative;
+    &_inner {
+        position: absolute;
+        bottom: 53px;
+        margin-left: $margin-main;
+    }
+    &-main {
+        min-width: 100%;
+        height: 455px;
+        object-fit: cover;
+    }
+    &-slide {
+        height: 455px;
+        background-size: cover;
+
+        &:first-child {
+            display: block;
+        }
+    }
+    &-slide,
+    &_inner {
+        display: none;
+        transition: all 0.5s ease;
+    }
+    &-slide:first-child,
+    &_inner:first-child {
+        display: block;
+    }
+}
+.top-bar {
+    @extend %flexItemCenter;
+    justify-content: space-between;
+    margin-left: $margin-main;
+    margin-right: $margin-main;
+}
+.top-list {
+    @extend %flexItemCenter;
+    gap: 32px;
+}
+.top-link {
+    font-weight: 500;
+    line-height: 1.12;
+    padding: 32px 0px;
+}
+
+.top-act {
+    &__group {
+        @extend %flexItemCenter;
+        gap: 24px;
+    }
+    &__user {
+        @extend %flexItemCenter;
+        gap: 9px;
+    }
+    &__avt {
+        width: 30px;
+        border-radius: 50%;
+    }
+}
+
+.search-container {
+    position: relative;
+    width: 300px;
+    overflow: hidden;
+
+    & > .searchInput {
+        border: 1px solid rgb(169, 170, 173);
+        box-shadow: none;
+        border-radius: 0.5rem;
+        outline: none;
+        color: rgb(255, 255, 255);
+        font-size: 1.125rem;
+        width: 100%;
+        background-color: #000;
+        height: 3.5rem;
+        padding: 0px 1.5rem;
+        transition: border 400ms ease 0s;
+    }
+    & > .searchButton {
+        position: absolute;
+        right: 4px;
+        transform: translateY(-50%);
+        top: 52%;
+        & > img {
+            width: 22px;
+        }
+    }
+}
+.primary {
+    &-movie-name {
+        font-size: 4.8rem;
+        font-weight: 600;
+    }
+    &-movie-info {
+        font-size: 1.4rem;
+        margin-top: 20px;
+    }
+    &-action {
+        display: flex;
+        margin-top: 36px;
+        gap: 20px;
+    }
+}

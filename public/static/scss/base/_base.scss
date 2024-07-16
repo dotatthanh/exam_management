@@ -1,0 +1,59 @@
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    background-color: var(--bg-color);
+    font-size: 1.6rem;
+    font-family: "Roboto";
+    color: var(--text-color);
+    scroll-behavior: smooth;
+}
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+}
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+button,
+textarea,
+input,
+select {
+    font-family: inherit;
+    color: inherit;
+}
+.mt-32 {
+    margin-top: 32px;
+}
+.row::before {
+    content: none;
+}
+.mt-header {
+    margin-top: 82px;
+}
+@media (min-width: 1400px) {
+    .container {
+        --bs-gutter-x: 0;
+        max-width: 1250px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+/* Cách tiếp cận chung cho hầu hết các trình duyệt */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s; /* Tránh trình duyệt thay đổi màu nền ngay lập tức */
+    -webkit-text-fill-color: #000 !important; /* Ví dụ màu chữ bạn muốn */
+    background-color: var(--text-color) !important; /* Ví dụ màu nền bạn muốn */
+    border-color: #000 !important; /* Ví dụ màu viền bạn muốn */
+}

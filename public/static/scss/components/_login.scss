@@ -1,0 +1,165 @@
+%flexItemCenter {
+    display: flex;
+    align-items: center;
+}
+
+.login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+
+    &__form {
+        width: 450px;
+        height: auto;
+        background: #fff;
+        padding: 50px;
+    }
+    &__title {
+        font-size: 3.2rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    &__content {
+        margin-top: 50px;
+        display: grid;
+        row-gap: 15px;
+    }
+    &__box {
+        position: relative;
+    }
+    &__input {
+        width: 100%;
+        padding: 1.4rem 1.8rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        outline: none;
+    }
+    &__label {
+        position: absolute;
+        left: 0px;
+        color: #ddd;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0 17px;
+        user-select: none;
+        pointer-events: none;
+        transition: 0.25s ease;
+    }
+    &__eye {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &__check {
+        @extend %flexItemCenter;
+        justify-content: space-between;
+        margin-top: 15px;
+        &-group {
+            @extend %flexItemCenter;
+        }
+        &-label {
+            margin-left: 10px;
+        }
+    }
+    &__check-label,
+    &__forgot {
+        font-size: 1.4rem;
+        line-height: 1.66;
+        letter-spacing: 0.3px;
+    }
+    &__forgot {
+        color: #6a5af9;
+    }
+    &__button {
+        background: #6a5af9;
+        color: var(--text-color);
+        width: 100%;
+        border-radius: 8px;
+        height: 4rem;
+        margin-top: 2.5rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+    &__google {
+        background-color: #333;
+        border-radius: 8px;
+        @extend %flexItemCenter;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 400;
+    }
+    &__line {
+        height: 0.5px;
+        width: 100%;
+        background-color: #e5e5e5;
+        margin-top: 2.5rem;
+    }
+    &__register {
+        font-size: 1.4rem;
+        line-height: 20px; /* 166.667% */
+        letter-spacing: 0.3px;
+        @extend %flexItemCenter;
+        justify-content: center;
+        gap: 5px;
+        height: 6rem;
+        & > a {
+            color: #6a5af9;
+        }
+    }
+}
+.login__input:focus {
+    border: 1px solid #6a5af9;
+    & + .login__label {
+        top: 0;
+        left: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background: #fff;
+        color: #6a5af9;
+    }
+}
+
+input[type="checkbox"] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 35px;
+    height: 20px;
+    background: grey;
+    display: block;
+    border-radius: 10px;
+    position: relative;
+}
+
+.toggle:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+input:checked + .toggle {
+    background: #6a5af9;
+}
+
+input:checked + .toggle:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+.toggle:active:after {
+    width: 25px;
+}

@@ -1,0 +1,68 @@
+.swiper {
+    margin-top: 16px;
+    &-slide {
+        width: 25%;
+    }
+}
+
+.btn-arrow {
+    color: transparent;
+    display: block;
+    margin: 3rem;
+    width: 6rem;
+    height: 6rem;
+    top: 80px;
+    background-color: rgba(black, 0.05);
+
+    transition: all 150ms ease-out;
+
+    &::before,
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        background-color: #606060;
+
+        transition: all 150ms ease-out;
+    }
+
+    &::before {
+        width: 75%;
+        height: 25%;
+    }
+
+    &::after {
+        width: 25%;
+        height: 75%;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: rgba(black, 0.1);
+
+        &::before,
+        &::after {
+            background-color: #404040;
+        }
+    }
+
+    &.btn-arrow-left,
+    &.btn-arrow-right {
+        &::before,
+        &::after {
+            top: 12.5%;
+            left: 12.5%;
+        }
+    }
+
+    &.btn-arrow-left {
+        transform: rotate(-45deg);
+    }
+
+    &.btn-arrow-right {
+        transform: rotate(135deg);
+    }
+}
