@@ -34,7 +34,7 @@ class StoreTaskRequest extends FormRequest
             'description' => 'nullable|max:1000',
         ];
 
-        if (!$this->parent_id && auth()->user()->hasRole('Admin')) {
+        if (! $this->parent_id && auth()->user()->hasRole('Admin')) {
             $rules['department_id'] = 'required';
         }
 
@@ -59,7 +59,7 @@ class StoreTaskRequest extends FormRequest
             'description.required' => 'Mô tả không được quá :max.',
         ];
 
-        if (!$this->parent_id && auth()->user()->hasRole('Admin')) {
+        if (! $this->parent_id && auth()->user()->hasRole('Admin')) {
             $messages['department_id.required'] = 'Bộ môn là trường bắt buộc.';
         }
 

@@ -32,6 +32,48 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('departments.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Khoa</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('majors.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Chuyên ngành</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('classes.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Lớp học</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('courses.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Học phần</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('qas.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Câu hỏi và đáp án</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('exam_rooms.index') }}" class=" waves-effect">
+                        <i class="bx bx-user"></i>
+                        <span>Phòng thi</span>
+                    </a>
+                </li>
+
                 @can(['Xem danh sách vai trò', 'Xem danh sách quyền'])
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

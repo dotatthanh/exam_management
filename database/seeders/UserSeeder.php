@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         User::truncate();
         User::create([
             'id' => 1,
-            'department_id' => 0,
+            'class_id' => null,
             'code' => 'ADMIN',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123123123'),

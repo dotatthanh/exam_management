@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Classes;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,8 +25,6 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::query();
-
-        $user = auth()->user();
 
         if ($request->search) {
             $users = $users->where('name', 'like', '%'.$request->search.'%');
@@ -48,8 +47,10 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $classes = Classes::all();
 
         $data = [
+            'classes' => $classes,
             'roles' => $roles,
         ];
 
@@ -66,7 +67,6 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $user = auth()->user();
 
             $file_path = '';
             if ($request->file('avatar')) {
@@ -76,6 +76,7 @@ class UserController extends Controller
             }
 
             $create = User::create([
+                'class_id' => $request->class_id,
                 'code' => '',
                 'name' => $request->name,
                 'password' => bcrypt($request->password),
@@ -131,10 +132,12 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
+        $classes = Classes::all();
 
         $data = [
             'data_edit' => $user,
             'roles' => $roles,
+            'classes' => $classes,
         ];
 
         return view('admin.user.edit', $data);
@@ -154,6 +157,7 @@ class UserController extends Controller
             $auth = auth()->user();
 
             $data = [
+                'class_id' => $request->class_id,
                 'name' => $request->name,
                 'email' => $request->email,
                 'gender' => $request->gender,
@@ -182,7 +186,6 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('alert-success', 'Sửa tài khoản thành công!');
         } catch (Exception $e) {
-            dd($e);
             DB::rollback();
 
             return redirect()->back()->with('alert-error', 'Sửa tài khoản thất bại!');

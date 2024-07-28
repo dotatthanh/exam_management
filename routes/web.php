@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\ExamRoomController;
+use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\QAController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ExamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +32,12 @@ Route::prefix('admin')->group(function () {
         Route::resource('exams', ExamController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
+        Route::resource('departments', DepartmentController::class);
+        Route::resource('majors', MajorController::class);
+        Route::resource('classes', ClassController::class);
+        Route::resource('courses', CourseController::class);
+        Route::resource('qas', QAController::class);
+        Route::resource('exam_rooms', ExamRoomController::class);
 
         Route::resource('users', UserController::class);
         Route::get('/users/view-change-password/{user}', [UserController::class, 'viewChangePassword'])->name('users.view-change-password');

@@ -25,6 +25,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'class_id' => 'required',
             'name' => 'required|max:255',
             'email' => [
                 'required', 'string', 'email', 'max:255',
@@ -44,6 +45,7 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         $messages = [
+            'class_id.required' => 'Lớp học là trường bắt buộc.',
             'name.required' => 'Họ và tên là trường bắt buộc.',
             'name.max' => 'Họ và tên không được dài quá :max ký tự.',
             'gender.required' => 'Giới tính là trường bắt buộc.',

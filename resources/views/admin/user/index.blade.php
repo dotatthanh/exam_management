@@ -54,7 +54,7 @@
                                     <th style="width: 70px;" class="text-center">STT</th>
                                     <th>Mã</th>
                                     <th>Ảnh đại diện</th>
-                                    <th>Bộ môn</th>
+                                    <th>Lớp học</th>
                                     <th>Họ và tên</th>
                                     <th>Vai trò</th>
                                     <th>Giới tính</th>
@@ -83,7 +83,7 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td>{{ $user->department?->name }}</td>
+                                        <td>{{ $user->class?->name }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>
                                             @foreach ($user->roles as $role)

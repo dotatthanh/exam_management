@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDepartmentRequest extends FormRequest
+class StoreCourseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,7 @@ class StoreDepartmentRequest extends FormRequest
     public function rules()
     {
         return [
+            'code' => 'required|max:10',
             'name' => 'required|max:255',
         ];
     }
@@ -31,8 +32,10 @@ class StoreDepartmentRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tên khoa là trường bắt buộc.',
-            'name.max' => 'Tên khoa không được dài quá :max ký tự.',
+            'code.required' => 'Mã học phần là trường bắt buộc.',
+            'code.max' => 'Mã học phần không được dài quá :max ký tự.',
+            'name.required' => 'Tên học phần là trường bắt buộc.',
+            'name.max' => 'Tên học phần không được dài quá :max ký tự.',
         ];
     }
 }

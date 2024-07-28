@@ -12,6 +12,19 @@
         </div>
 
         <div class="form-group mb-3">
+            <label for="class_id">Tên lớp học <span class="text-danger">*</span></label>
+            <select class="form-control select2" name="class_id"  id="parent-category-id">
+                <option value="">Chọn lớp học</option>
+                @foreach ($classes as $class)
+                    <option value="{{ $class->id }}"
+                        {{ old('class_id', $data_edit->class_id ?? '') == $class->id ? 'selected' : '' }}>
+                        {{ $class->name }}</option>
+                @endforeach
+            </select>
+            {!! $errors->first('class_id', '<span class="error">:message</span>') !!}
+        </div>
+
+        <div class="form-group mb-3">
             <label for="gender">Giới tính <span class="text-danger">*</span></label>
             <div class="form-check form-check">
                 <input type="radio" class="form-check-input" id="nam" name="gender" value="Nam" {{ isset($data_edit->gender) && $data_edit->gender == 'Nam' ? 'checked' : '' }} checked>

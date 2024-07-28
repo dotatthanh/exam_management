@@ -40,15 +40,15 @@ class ExamController extends Controller
 
         Storage::disk('public_uploads')->put("/exam/$sourceFileName", $code);
 
-        $outputFilePath = public_path("uploads/exam/test");
+        $outputFilePath = public_path('uploads/exam/test');
         if (Storage::disk('public_uploads')->exists("/exam/$sourceFileName")) {
             // dd($sourceFilePath, $outputFilePath);
             $compile_output = shell_exec("gcc $sourceFilePath -o $outputFilePath 2>&1");
             if ($compile_output) {
-                dd("Code đang lỗi rồi!". $compile_output);
+                dd('Code đang lỗi rồi!'.$compile_output);
             } else {
                 $a = 7;
-                $output = shell_exec("$outputFilePath $a");
+                $output = shell_exec("$outputFilePath $a 3");
                 dd($output);
 
                 // if (Storage::disk('public_uploads')->exists("/exem/test.exe")) {
@@ -63,7 +63,7 @@ class ExamController extends Controller
                 // }
             }
         } else {
-            dd("Lưu file thất bại!");
+            dd('Lưu file thất bại!');
         }
     }
 

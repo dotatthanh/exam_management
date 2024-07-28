@@ -73,7 +73,7 @@ var __webpack_exports__ = {};
         down: "mdi mdi-chevron-down"
       },
       appendWidgetTo: "#timepicker-input-group1"
-    }), s("#timepicker2").timepicker({
+    }), s(".timepicker2").timepicker({
       showMeridian: !1,
       icons: {
         up: "mdi mdi-chevron-up",
