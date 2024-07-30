@@ -13,7 +13,7 @@
 
         <div class="form-group mb-3">
             <label for="answer">Tên đáp án <span class="text-danger">*</span></label>
-            <input id="answer" name="answer" type="text" class="form-control" placeholder="Tên đáp án" value="{{ old('answer', $data_edit->answer ?? '') }}">
+            <input id="answer" name="answer" type="text" class="form-control" placeholder="VD: 1;2;3" value="{{ old('answer', $data_edit->answer ?? '') }}">
             {!! $errors->first('answer', '<span class="error">:message</span>') !!}
         </div>
     </div>

@@ -15,4 +15,8 @@ class ExamQA extends Model
         'exam_id',
         'qa_id',
     ];
+
+    public function qa() {
+        return $this->belongsTo(QA::class);
+    }
 }

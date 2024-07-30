@@ -86,6 +86,13 @@
                                                     </form>
                                                 </li>
                                                 {{-- @endcan --}}
+                                                <li class="list-inline-item px">
+                                                    <form method="post" action="{{ route('exams.store-exam', $item->id) }}">
+                                                        @csrf
+
+                                                        <button type="submit" class="btn btn-primary">Thi</button>
+                                                    </form>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>

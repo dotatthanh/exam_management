@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_qa', function (Blueprint $table) {
+        Schema::create('exam_users', function (Blueprint $table) {
             $table->id();
-            $table->integer('exam_id');
-            $table->integer('qa_id');
-            $table->integer('index')->comment('Câu hỏi số. VD: Câu 1, Câu 2');
+            $table->integer('user_id');
+            $table->integer('exam_room_id')->comment('phòng');
+            $table->integer('exam_id')->comment('đề');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_qa');
+        Schema::dropIfExists('exam_users');
     }
 };

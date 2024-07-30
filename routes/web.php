@@ -29,6 +29,11 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        Route::post('/exams/store-answer', [ExamController::class, 'storeAnswer'])->name('exams.store-answer');
+
+        
+        Route::post('/exams/store-exam/{examRoomId}', [ExamController::class, 'storeExam'])->name('exams.store-exam');
+        Route::get('/exams/exam/{examUserId}', [ExamController::class, 'exam'])->name('exams.exam');
         Route::resource('exams', ExamController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);

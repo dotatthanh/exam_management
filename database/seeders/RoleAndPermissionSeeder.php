@@ -18,6 +18,8 @@ class RoleAndPermissionSeeder extends Seeder
     {
         // Thêm vai trò
         $super_admin = Role::create(['name' => 'Admin']);
+        $teacher = Role::create(['name' => 'Giáo viên']);
+        $student = Role::create(['name' => 'Sinh viên']);
 
         // Gán vai trò
         User::find(1)->assignRole('Admin');

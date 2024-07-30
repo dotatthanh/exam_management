@@ -101,6 +101,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('alert-success', 'Thêm tài khoản thành công!');
         } catch (Exception $e) {
+            dd($e);
             DB::rollback();
 
             return redirect()->back()->with('alert-error', 'Thêm tài khoản thất bại!');

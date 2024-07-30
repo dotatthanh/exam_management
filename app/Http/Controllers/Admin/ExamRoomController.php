@@ -71,7 +71,7 @@ class ExamRoomController extends Controller
                     'code' => 'PT-'.$examRoom->id.'-'.$i,
                 ]);
 
-                for ($j = 1; $j <= 10; $j++) {
+                for ($j = 1; $j <= Exam::TOTAL_QUESTIONS; $j++) {
                     $this->createExamQA($exam);
                 }
             }

@@ -19,15 +19,66 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Thi</h4>
+                    <h4 class="card-title mb-4">Phòng: {{ $examRoom->name }}</h4>
+                    <div>Thời gian: {{ $examRoom->time }} phút | Thời gian bắt đầu: {{ $examRoom->start_time }} phút | Thời gian kết thúc: {{ $examRoom->end_time }} phút</div>
+                    <div class="row justify-content-end">
+                        <div class="col-2" id="alert">
+                            @if (!empty($result) && $result->is_correct == true)
+                                <div class="card bg-success text-white-50">
+                                    <div class="card-body">
+                                        <h5 class="mb-4 text-white"><i class="mdi mdi-check-all me-3"></i> Đã làm đúng</h5>
+                                        <p class="card-text">Bạn đã làm đúng và được điểm.</p>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="card bg-danger text-white-50">
+                                    <div class="card-body">
+                                        <h5 class="mb-4 text-white"><i class="mdi mdi-alert-outline me-3"></i>Chưa làm đúng</h5>
+                                        <p class="card-text">Bạn chưa làm đúng và chưa được điểm.</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
                     <form action="{{ route('exams.store') }}" method="post">
                         @csrf
                         @include('admin.exam._form')
 
-                        <div class="row justify-content-end">
+                        <div class="row mt-3">
                             <div class="col-lg-10">
-                                <button type="submit" id='test' class="btn btn-primary">Nộp bài</button>
+                                <button type="button" id='run' class="btn btn-primary">Chạy code</button>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        @php
+                                            $active = '';
+                                            $current = false;
+                                            if ($questionIndex == $i) {
+                                                $current = true;
+                                                $active = 'active';
+                                            }
+                                        @endphp
+                                        <li class="page-item {{ $active }}">
+                                            @if ($current)
+                                                <span class="page-link">
+                                                    {{ $i }}
+                                                    <span class="sr-only">(current)</span>
+                                                </span>
+                                            @else
+                                                <a class="page-link" href="{{ route('exams.exam', [
+                                                    'examUserId' => $examUser->id,
+                                                    'question' => $i,
+                                                ]) }}">{{ $i }}</a>
+                                            @endif
+                                        </li>
+                                    @endfor
+                                </ul>
+                            </nav>
                         </div>
                     </form>
                 </div>
@@ -57,26 +108,82 @@
 
     <script src="https://www.unpkg.com/ace-builds@latest/src-noconflict/ace.js"></script>
     <script>
-        var editor = ace.edit("example", {
+        var result = @json($result);
+        var answer = result ? result.answer : ''
+        var editor = ace.edit("editor", {
             theme: "ace/theme/textmate",
-            mode: "ace/mode/javascript",
-            value: `#include <stdio.h>
-#include <stdlib.h>
+            mode: "ace/mode/c_cpp",
+            value: answer
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        printf("Usage: %s <number>", argv[0]);
-        return 1;
-    }
-    int a = atoi(argv[1]);
-    printf("Bình phương của %d là: %d", a, a * a);
-    return 0;
-}`
+// #include <stdio.h>
+
+// int main() {
+//     int a, b, c;
+//     printf("Nhap vao a = ");
+//     scanf("%d", &a);
+//     printf("Nhap vao b = ");
+//     scanf("%d", &b);
+//     c = a + b;
+//     printf("a + b = %d", c);
+//     return 0;
+// }
         });
 
         $(document).ready(function () {
-            $('#test').click(function() {
-                $('textarea[name="code"]').val(editor.getValue())
+            $('#run').click(function() {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var examUserId = $('input[name="exam_user_id"]').val()
+                var qaId = $('input[name="qa_id"]').val()
+
+                $.ajax({
+                    url: `{{ route('exams.store-answer') }}`,
+                    type: "POST",
+                    data: {
+                        _token: csrfToken,
+                        exam_user_id: examUserId,
+                        qa_id: qaId,
+                        answer: editor.getValue()
+                    },
+                    success: function (respon) {
+                        let data = respon.data
+                        if (data) {
+                            let html = ``;
+
+                            if (data.is_correct == true) {
+                                html = `
+                                    <div class="card bg-success text-white-50">
+                                        <div class="card-body">
+                                            <h5 class="mb-4 text-white"><i class="mdi mdi-check-all me-3"></i> Đã làm đúng</h5>
+                                            <p class="card-text">Bạn đã làm đúng và được điểm.</p>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                html = `
+                                    <div class="card bg-danger text-white-50">
+                                        <div class="card-body">
+                                            <h5 class="mb-4 text-white"><i class="mdi mdi-alert-outline me-3"></i>Chưa làm đúng</h5>
+                                            <p class="card-text">Bạn chưa làm đúng và chưa được điểm.</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+
+                            $(`#alert`).html(html)
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 400) {
+                            let respon = xhr.responseJSON
+                            let message = respon.message
+                            console.log(message);
+                        }
+                        if (xhr.status == 500) {
+                            alert('Lỗi server!!!');
+                        }
+                    }
+
+                })
             })
         })
     </script>

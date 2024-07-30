@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Exam extends Model
+class QaResult extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'exam_room_id',
-        'code',
+        'exam_user_id',
+        'qa_id',
+        'answer',
+        'is_correct',
     ];
 
-    const TOTAL_QUESTIONS = 10;
+    public function qa() {
+        return $this->belongsTo(QA::class);
+    }
 }
