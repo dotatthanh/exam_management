@@ -8,21 +8,29 @@ use App\Models\ExamQA;
 use App\Models\ExamRoom;
 use App\Models\ExamUser;
 use App\Models\QaResult;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ExamController extends Controller
 {
-    // Vào phong thi
+    // Vào phòng thi
     public function exam(Request $request, $examUserId)
     {
         $examUser = ExamUser::with('examRoom')->find($examUserId);
         if (empty($examUser)) {
             abort(404);
+        }
+
+        $examRoom = $examUser->examRoom;
+        if (now() < $examRoom->start_time) {
+            return redirect()->back()->with('alert-error', 'Chưa tới giờ thi.');
+        }
+        if (now() > $examRoom->end_time) {
+            return redirect()->back()->with('alert-error', 'Đã hết giờ thi.');
         }
 
         $questionIndex = $this->handleQuestionIndex($request->question);
@@ -39,7 +47,7 @@ class ExamController extends Controller
 
         $data = [
             'examQA' => $examQA,
-            'examRoom' => $examUser->examRoom,
+            'examRoom' => $examRoom,
             'examUser' => $examUser,
             'result' => $result,
             'questionIndex' => $questionIndex,
@@ -48,7 +56,8 @@ class ExamController extends Controller
         return view('admin.exam.create', $data);
     }
 
-    private function handleQuestionIndex($question) {
+    private function handleQuestionIndex($question)
+    {
         $questionIndex = 1;
         if (isset($question)) {
             if ($question >= 1 && $question <= Exam::TOTAL_QUESTIONS) {
@@ -103,7 +112,8 @@ class ExamController extends Controller
         return redirect()->route('exams.exam', $examUser->id);
     }
 
-    private function handleResult ($request) {
+    private function handleResult($request)
+    {
         $result = QaResult::where([
             'exam_user_id' => $request->exam_user_id,
             'qa_id' => $request->qa_id,
@@ -111,6 +121,8 @@ class ExamController extends Controller
 
         if (empty($result)) {
             $result = QaResult::create($request->all());
+        } else {
+            $result->update($request->all());
         }
 
         return $result;
@@ -130,28 +142,21 @@ class ExamController extends Controller
             $executableFileName = 'test';
             $sourceFilePath = public_path("$relativePath/$sourceFileName");
             $outputFilePath = public_path("$relativePath/$executableFileName");
-
             Storage::disk('public_uploads')->put("/exam/$sourceFileName", $request->answer);
 
-            $outputFilePath = public_path('uploads/exam/test');
             if (Storage::disk('public_uploads')->exists("/exam/$sourceFileName")) {
                 $compile_output = shell_exec("gcc $sourceFilePath -o $outputFilePath 2>&1");
                 if ($compile_output) {
-                    // Log::error("-----> Code đang lỗi rồi!");
-                    Log::error("-----> Code đang lỗi rồi!");
-                    // dd('Code đang lỗi rồi!'.$compile_output);
+                    $result->update(['is_correct' => false]);
+                    Log::error('-----> Code đang lỗi rồi! qa_result id = '.$result->id);
+                    DB::commit();
+
                     return $this->responseError(Response::HTTP_BAD_REQUEST, null, $compile_output);
                 } else {
-                    // $a = 7;
-                    // $b = 8;
-                    // $output = shell_exec("$outputFilePath $a $b");
-                    // dd($output);
-
-                    // dd(123);
                     $input = str_replace(';', "\n", $qa->input)."\n";
                     $descriptorSpec = [
-                        0 => ["pipe", "r"],  // stdin
-                        1 => ["pipe", "w"],  // stdout
+                        0 => ['pipe', 'r'],  // stdin
+                        1 => ['pipe', 'w'],  // stdout
                     ];
 
                     $process = proc_open($outputFilePath, $descriptorSpec, $pipes);
@@ -168,30 +173,28 @@ class ExamController extends Controller
 
                         proc_close($process);
 
-                        $answer = nl2br($output);
+                        $answer = nl2br($output); // Sử dụng nl2br để hiển thị xuống dòng
                         if (strcmp($answer, $qa->answer) == 0) {
                             $result->update(['is_correct' => true]);
                         } else {
                             $result->update(['is_correct' => false]);
                         }
-                        // echo $answer; // Sử dụng nl2br để hiển thị xuống dòng
                     }
                 }
             } else {
-                // dd('Lưu file thất bại!');
-                // Log::error("-----> Không lưu được file code bài làm");
-                Log::error("-----> Không lưu được file code bài làm");
+                Log::error('-----> Không lưu được file code bài làm. qa_result id = '.$result->id);
+                DB::commit();
+
                 return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, null, 'Có lỗi xảy ra!');
             }
 
             DB::commit();
-            return $this->responseSuccess(Response::HTTP_OK, $result);
 
-            return redirect()->route('courses.index')->with('alert-success', 'Thêm học phần thành công!');
+            return $this->responseSuccess(Response::HTTP_OK, $result);
         } catch (Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('alert-error', 'Thêm học phần thất bại!');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, null, 'Có lỗi xảy ra!');
         }
     }
 

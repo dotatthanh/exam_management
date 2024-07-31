@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('exam_rooms', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->comment('id giáo viên');
             $table->integer('class_id');
             $table->integer('course_id');
             $table->string('name')->comment('Tên phòng thi');
             $table->integer('exam_quantity')->comment('Số lượng đề thi');
             $table->integer('time')->comment('Thời gian thi');
-            $table->time('start_time')->comment('Thời gian bắt đầu thi');
-            $table->time('end_time')->comment('Thời gian kết thúc thi');
+            $table->dateTime('start_time')->comment('Thời gian bắt đầu thi');
+            $table->dateTime('end_time')->comment('Thời gian kết thúc thi');
             $table->timestamps();
         });
     }

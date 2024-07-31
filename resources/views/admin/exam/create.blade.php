@@ -19,6 +19,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <div id="countdown" class="float-end"></div>
                     <h4 class="card-title mb-4">Phòng: {{ $examRoom->name }}</h4>
                     <div>Thời gian: {{ $examRoom->time }} phút | Thời gian bắt đầu: {{ $examRoom->start_time }} phút | Thời gian kết thúc: {{ $examRoom->end_time }} phút</div>
                     <div class="row justify-content-end">
@@ -48,6 +49,14 @@
                         <div class="row mt-3">
                             <div class="col-lg-10">
                                 <button type="button" id='run' class="btn btn-primary">Chạy code</button>
+                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Xem thông báo</button>
+                                <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                                    <div class="offcanvas-header">
+                                        <h5 id="offcanvasBottomLabel"></h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -176,7 +185,15 @@
                         if (xhr.status == 400) {
                             let respon = xhr.responseJSON
                             let message = respon.message
-                            console.log(message);
+                            showCanvas (message)
+                            $(`#alert`).html(`
+                                    <div class="card bg-danger text-white-50">
+                                        <div class="card-body">
+                                            <h5 class="mb-4 text-white"><i class="mdi mdi-alert-outline me-3"></i>Chưa làm đúng</h5>
+                                            <p class="card-text">Bạn chưa làm đúng và chưa được điểm.</p>
+                                        </div>
+                                    </div>
+                                `)
                         }
                         if (xhr.status == 500) {
                             alert('Lỗi server!!!');
@@ -185,6 +202,30 @@
 
                 })
             })
+
+            function showCanvas (message) {
+                $(`.offcanvas-body`).html(message)
+                let offcanvas = new bootstrap.Offcanvas($(`#offcanvasBottom`)).show();
+            }
+
+
+            var deadline = new Date("{{ $examRoom->end_time }}").getTime();
+
+            var interval = setInterval(function() {
+                var now = new Date().getTime();
+                var timeLeft = deadline - now;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    alert("Đã hết thời gian làm bài.")
+                    // document.getElementById('exam-form').submit(); // submit form when time is up
+                } else {
+                    // Update countdown display
+                    var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                    document.getElementById('countdown').innerHTML = "Thời gian còn lại: " + minutes + "m " + seconds + "s ";
+                }
+            }, 1000);
         })
     </script>
 @endsection

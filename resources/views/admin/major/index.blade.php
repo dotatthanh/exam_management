@@ -36,7 +36,7 @@
                             </button>
                         </div>
 
-                        {{-- @can('Thêm chuyên ngành') --}}
+                        @can('Thêm chuyên ngành')
                         <div class="col-sm-6">
                             <div class="text-sm-end">
                                 <a href="{{ route('majors.create') }}"
@@ -44,7 +44,7 @@
                                         class="mdi mdi-plus mr-1"></i> Thêm chuyên ngành</a>
                             </div>
                         </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </form>
 
                     <div class="table-responsive">
@@ -66,13 +66,13 @@
                                         <td>{{ $item->department->name }}</td>
                                         <td class="text-center">
                                             <ul class="list-inline font-size-20 contact-links mb-0">
-                                                {{-- @can('Chỉnh sửa chuyên ngành') --}}
+                                                @can('Chỉnh sửa chuyên ngành')
                                                 <li class="list-inline-item px">
                                                     <a href="{{ route('majors.edit', $item->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="mdi mdi-pencil text-success"></i></a>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
 
-                                                {{-- @can('Xóa chuyên ngành') --}}
+                                                @can('Xóa chuyên ngành')
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('majors.destroy', $item->id) }}">
                                                         @csrf
@@ -81,7 +81,7 @@
                                                         <button type="submit" data-toggle="tooltip" data-placement="top" title="Xóa" class="border-0 bg-white"><i class="mdi mdi-trash-can text-danger"></i></button>
                                                     </form>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
                                             </ul>
                                         </td>
                                     </tr>

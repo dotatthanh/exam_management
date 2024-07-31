@@ -23,7 +23,7 @@ class StoreExamRoomRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|max:255',
             'class_id' => 'required',
             'course_id' => 'required',
@@ -32,11 +32,17 @@ class StoreExamRoomRequest extends FormRequest
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after_or_equal:start_time',
         ];
+
+        if (auth()->user()->hasRole('Admin')) {
+            $rules['user_id'] = 'required';
+        }
+
+        return $rules;
     }
 
     public function messages()
     {
-        return [
+        $messages = [
             'name.required' => 'Tên lớp học là trường bắt buộc.',
             'name.max' => 'Tên lớp học không được dài quá :max ký tự.',
             'class_id.required' => 'Tên lớp học là trường bắt buộc.',
@@ -55,5 +61,11 @@ class StoreExamRoomRequest extends FormRequest
             'end_time.date_format' => 'Giờ kết thúc không đúng định dạng.',
             'end_time.after_or_equal' => 'Giờ kết thúc phải sau giờ bắt đầu.',
         ];
+
+        if (auth()->user()->hasRole('Admin')) {
+            $messages['user_id.required'] = 'Tên giáo viên là trường bắt buộc.';
+        }
+
+        return $messages;
     }
 }

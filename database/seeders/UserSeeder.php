@@ -28,5 +28,31 @@ class UserSeeder extends Seeder
             'address' => 'Hà Nội',
             'gender' => 'Nam',
         ]);
+
+        User::create([
+            'id' => 2,
+            'class_id' => 1,
+            'code' => 'TK000002',
+            'email' => 'teacher@com.com',
+            'password' => bcrypt('123123123'),
+            'name' => 'Thành',
+            'birthday' => '1995-02-28',
+            'phone_number' => '0123123122',
+            'address' => 'Hà Nội',
+            'gender' => 'Nam',
+        ]);
+
+        User::create([
+            'id' => 3,
+            'class_id' => 1,
+            'code' => 'TK000002',
+            'email' => 'student@com.vn',
+            'password' => bcrypt('123123123'),
+            'name' => 'Thành',
+            'birthday' => '1995-02-28',
+            'phone_number' => '0123123122',
+            'address' => 'Hà Nội',
+            'gender' => 'Nam',
+        ]);
     }
 }

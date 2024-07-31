@@ -17,6 +17,7 @@ class ExamRoom extends Model
         'time',
         'start_time',
         'end_time',
+        'user_id',
     ];
 
     public function class()

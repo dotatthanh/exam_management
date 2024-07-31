@@ -24,7 +24,7 @@
                         <div class="col-sm-3">
                             <div class="search-box mr-2 mb-2 d-inline-block">
                                 <div class="position-relative">
-                                    <input type="text" name="search" class="form-control" placeholder="Nhập câu hỏi">
+                                    <input type="text" name="search" class="form-control" placeholder="Nhập tên phòng">
                                     <i class="bx bx-search-alt search-icon"></i>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                             </button>
                         </div>
 
-                        {{-- @can('Thêm phòng thi') --}}
+                        @can('Thêm phòng thi')
                         <div class="col-sm-6">
                             <div class="text-sm-end">
                                 <a href="{{ route('exam_rooms.create') }}"
@@ -44,7 +44,7 @@
                                         class="mdi mdi-plus mr-1"></i> Thêm phòng thi</a>
                             </div>
                         </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </form>
 
                     <div class="table-responsive">
@@ -70,13 +70,13 @@
                                         <td>{{ $item->exam_quantity }}</td>
                                         <td class="text-center">
                                             <ul class="list-inline font-size-20 contact-links mb-0">
-                                                {{-- @can('Chỉnh sửa phòng thi') --}}
+                                                @can('Chỉnh sửa phòng thi')
                                                 <li class="list-inline-item px">
                                                     <a href="{{ route('exam_rooms.edit', $item->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="mdi mdi-pencil text-success"></i></a>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
 
-                                                {{-- @can('Xóa phòng thi') --}}
+                                                @can('Xóa phòng thi')
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('exam_rooms.destroy', $item->id) }}">
                                                         @csrf
@@ -85,7 +85,9 @@
                                                         <button type="submit" data-toggle="tooltip" data-placement="top" title="Xóa" class="border-0 bg-white"><i class="mdi mdi-trash-can text-danger"></i></button>
                                                     </form>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
+
+                                                @can('Thi')
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('exams.store-exam', $item->id) }}">
                                                         @csrf
@@ -93,6 +95,7 @@
                                                         <button type="submit" class="btn btn-primary">Thi</button>
                                                     </form>
                                                 </li>
+                                                @endcan
                                             </ul>
                                         </td>
                                     </tr>

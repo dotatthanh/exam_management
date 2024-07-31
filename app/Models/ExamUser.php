@@ -15,7 +15,8 @@ class ExamUser extends Model
         'exam_id',
     ];
 
-    public function examRoom() {
+    public function examRoom()
+    {
         return $this->belongsTo(ExamRoom::class);
     }
 }

@@ -36,7 +36,7 @@
                             </button>
                         </div>
 
-                        {{-- @can('Thêm khoa') --}}
+                        @can('Thêm khoa')
                         <div class="col-sm-6">
                             <div class="text-sm-end">
                                 <a href="{{ route('departments.create') }}"
@@ -44,7 +44,7 @@
                                         class="mdi mdi-plus mr-1"></i> Thêm khoa</a>
                             </div>
                         </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </form>
 
                     <div class="table-responsive">
@@ -64,13 +64,13 @@
                                         <td>{{ $item->name }}</td>
                                         <td class="text-center">
                                             <ul class="list-inline font-size-20 contact-links mb-0">
-                                                {{-- @can('Chỉnh sửa khoa') --}}
+                                                @can('Chỉnh sửa khoa')
                                                 <li class="list-inline-item px">
                                                     <a href="{{ route('departments.edit', $item->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="mdi mdi-pencil text-success"></i></a>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
 
-                                                {{-- @can('Xóa khoa') --}}
+                                                @can('Xóa khoa')
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('departments.destroy', $item->id) }}">
                                                         @csrf
@@ -79,7 +79,7 @@
                                                         <button type="submit" data-toggle="tooltip" data-placement="top" title="Xóa" class="border-0 bg-white"><i class="mdi mdi-trash-can text-danger"></i></button>
                                                     </form>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
                                             </ul>
                                         </td>
                                     </tr>

@@ -36,7 +36,7 @@
                             </button>
                         </div>
 
-                        {{-- @can('Thêm tài khoản') --}}
+                        @can('Thêm tài khoản')
                         <div class="col-sm-6">
                             <div class="text-sm-end">
                                 <a href="{{ route('users.create') }}"
@@ -44,7 +44,7 @@
                                         class="mdi mdi-plus mr-1"></i> Thêm tài khoản</a>
                             </div>
                         </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </form>
 
                     <div class="table-responsive">
@@ -95,15 +95,14 @@
                                         <td>{{ date("d-m-Y", strtotime($user->birthday)) }}</td>
                                         <td>{{ $user->address }}</td>
                                         <td class="text-center">
-                                            @if ($user->id != 1)
                                             <ul class="list-inline font-size-20 contact-links mb-0">
-                                                {{-- @can('Chỉnh sửa tài khoản') --}}
+                                                @can('Chỉnh sửa tài khoản')
                                                 <li class="list-inline-item px">
                                                     <a href="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="mdi mdi-pencil text-success"></i></a>
                                                 </li>
-                                                {{-- @endcan --}}
+                                                @endcan
 
-                                                {{-- @can('Xóa tài khoản') --}}
+                                                @can('Xóa tài khoản')
                                                 @if (auth()->id() != $user->id)
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('users.destroy', $user->id) }}">
@@ -114,9 +113,8 @@
                                                     </form>
                                                 </li>
                                                 @endif
-                                                {{-- @endcan --}}
+                                                @endcan
                                             </ul>
-                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

@@ -14,9 +14,11 @@ class ExamQA extends Model
     protected $fillable = [
         'exam_id',
         'qa_id',
+        'index',
     ];
 
-    public function qa() {
+    public function qa()
+    {
         return $this->belongsTo(QA::class);
     }
 }

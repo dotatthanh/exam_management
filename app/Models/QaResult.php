@@ -16,7 +16,8 @@ class QaResult extends Model
         'is_correct',
     ];
 
-    public function qa() {
+    public function qa()
+    {
         return $this->belongsTo(QA::class);
     }
 }

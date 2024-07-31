@@ -10,6 +10,8 @@ use App\Models\Exam;
 use App\Models\ExamQA;
 use App\Models\ExamRoom;
 use App\Models\QA;
+use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,10 +25,20 @@ class ExamRoomController extends Controller
      */
     public function index(Request $request)
     {
-        $examRooms = ExamRoom::paginate(10);
+        $examRooms = ExamRoom::query();
+
+        $user = auth()->user();
+        if ($user->hasRole('Sinh viên')) {
+            $examRooms = $examRooms->where('class_id', $user->class_id);
+        }
+        if ($user->hasRole('Giáo viên')) {
+            $examRooms = $examRooms->where('user_id', $user->id);
+        }
+
+        $examRooms = $examRooms->paginate(10);
 
         if ($request->search) {
-            $examRooms = ExamRoom::where('question', 'like', '%'.$request->search.'%')->paginate(10);
+            $examRooms = ExamRoom::where('name', 'like', '%'.$request->search.'%')->paginate(10);
             $examRooms->appends(['search' => $request->search]);
         }
 
@@ -47,6 +59,7 @@ class ExamRoomController extends Controller
         $data = [
             'classes' => Classes::all(),
             'courses' => Course::all(),
+            'users' => User::role('Giáo viên')->get(),
         ];
 
         return view('admin.exam-room.create', $data);
@@ -63,16 +76,23 @@ class ExamRoomController extends Controller
         try {
             DB::beginTransaction();
 
-            $examRoom = ExamRoom::create($request->all());
+            $user = auth()->user();
+            $params = $request->all();
+            $params['start_time'] = Carbon::createFromFormat('H:i', $request->start_time);
+            $params['end_time'] = Carbon::createFromFormat('H:i', $request->end_time);
+            if (! $user->hasRole('Admin')) {
+                $params['user_id'] = $user->id;
+            }
+            $examRoom = ExamRoom::create($params);
 
-            for ($i = 1; $i <= $request->exam_quantity; $i++) {
+            for ($i = 1; $i <= $params['exam_quantity']; $i++) {
                 $exam = Exam::create([
                     'exam_room_id' => $examRoom->id,
                     'code' => 'PT-'.$examRoom->id.'-'.$i,
                 ]);
 
                 for ($j = 1; $j <= Exam::TOTAL_QUESTIONS; $j++) {
-                    $this->createExamQA($exam);
+                    $this->createExamQA($exam, $i);
                 }
             }
 
@@ -87,7 +107,7 @@ class ExamRoomController extends Controller
         }
     }
 
-    private function createExamQA($exam)
+    private function createExamQA($exam, $i)
     {
         do {
             $qa = QA::inRandomOrder()->first();
@@ -100,6 +120,7 @@ class ExamRoomController extends Controller
         ExamQA::create([
             'exam_id' => $exam->id,
             'qa_id' => $qa->id,
+            'index' => $i,
         ]);
     }
 
@@ -124,6 +145,7 @@ class ExamRoomController extends Controller
             'classes' => Classes::all(),
             'courses' => Course::all(),
             'data_edit' => $examRoom,
+            'users' => User::role('Giáo viên')->get(),
         ];
 
         return view('admin.exam-room.edit', $data);

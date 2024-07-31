@@ -71,6 +71,21 @@
             <input id="time" name="time" type="text" class="form-control" placeholder="Thời gian thi" value="{{ old('time', $data_edit->time ?? '') }}">
             {!! $errors->first('time', '<span class="error">:message</span>') !!}
         </div>
+
+        @hasanyrole('Admin')
+        <div class="form-group mb-3">
+            <label for="user_id">Tên giáo viên <span class="text-danger">*</span></label>
+            <select class="form-control select2" name="user_id"  id="user_id">
+                <option value="">Chọn giáo viên</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}"
+                        {{ old('user_id', $data_edit->user_id ?? '') == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}</option>
+                @endforeach
+            </select>
+            {!! $errors->first('user_id', '<span class="error">:message</span>') !!}
+        </div>
+        @endhasallroles
     </div>
 </div>
 
