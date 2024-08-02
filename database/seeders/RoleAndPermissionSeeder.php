@@ -132,5 +132,15 @@ class RoleAndPermissionSeeder extends Seeder
         $teacher->givePermissionTo($delete_room);
         $student->givePermissionTo($view_room);
         $student->givePermissionTo($exam);
+
+        $view_exam_result = Permission::create(['name' => 'Xem danh sách kết quả thi']);
+        $detail_exam_result = Permission::create(['name' => 'Chi tiết kết quả thi']);
+
+        $super_admin->givePermissionTo($view_exam_result);
+        $super_admin->givePermissionTo($detail_exam_result);
+        $teacher->givePermissionTo($view_exam_result);
+        $teacher->givePermissionTo($detail_exam_result);
+        $student->givePermissionTo($view_exam_result);
+        $student->givePermissionTo($detail_exam_result);
     }
 }

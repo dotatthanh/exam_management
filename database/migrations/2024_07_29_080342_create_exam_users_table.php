@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('exam_room_id')->comment('phòng');
             $table->integer('exam_id')->comment('đề');
+            $table->tinyInteger('status')->default(0)->comment('0: Chưa thi | 1: Đã thi');
             $table->timestamps();
         });
     }

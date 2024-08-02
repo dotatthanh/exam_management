@@ -241,8 +241,10 @@ class ExamController extends Controller
         //
     }
 
-    public function calculateExamScore(Request $request) {
+    public function calculateExamScore(Request $request)
+    {
         $examUser = ExamUser::find($request->exam_user_id);
+        $examUser->update(['status' => ExamUser::TAKEN_EXAM]);
         if (empty($examUser)) {
             return $this->responseError(Response::HTTP_BAD_REQUEST, null);
         }

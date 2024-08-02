@@ -30,27 +30,42 @@ class ExamRoom extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function isBeforeStartTime() {
+    public function isBeforeStartTime()
+    {
         if (now() < $this->start_time) {
             return true;
         }
-        return false;
-    }
-    
-    public function isAfterEndTime() {
-        if (now() > $this->end_time) {
-            return true;
-        }
+
         return false;
     }
 
-    public function checkExamTime() {
+    public function isAfterEndTime()
+    {
+        if (now() > $this->end_time) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canTakeExam()
+    {
         if ($this->isBeforeStartTime()) {
             return false;
         }
         if ($this->isAfterEndTime()) {
             return false;
         }
+
+        $hasTakenExam = ExamUser::where([
+            'user_id' => auth()->id(),
+            'exam_room_id' => $this->id,
+            'status' => 1,
+        ])->exists();
+        if ($hasTakenExam) {
+            return false;
+        }
+
         return true;
     }
 }

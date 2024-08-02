@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\ExamResultController;
 use App\Http\Controllers\Admin\ExamRoomController;
 use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -43,6 +44,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('courses', CourseController::class);
         Route::resource('qas', QAController::class);
         Route::resource('exam_rooms', ExamRoomController::class);
+        Route::resource('exam_results', ExamResultController::class);
 
         Route::resource('users', UserController::class);
         Route::get('/users/view-change-password/{user}', [UserController::class, 'viewChangePassword'])->name('users.view-change-password');

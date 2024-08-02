@@ -88,7 +88,7 @@
                                                 @endcan
 
                                                 @can('Thi')
-                                                @if ($item->checkExamTime())
+                                                @if ($item->canTakeExam())
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('exams.store-exam', $item->id) }}">
                                                         @csrf
