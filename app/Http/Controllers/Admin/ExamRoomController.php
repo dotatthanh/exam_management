@@ -92,7 +92,7 @@ class ExamRoomController extends Controller
                 ]);
 
                 for ($j = 1; $j <= Exam::TOTAL_QUESTIONS; $j++) {
-                    $this->createExamQA($exam, $i);
+                    $this->createExamQA($exam, $j);
                 }
             }
 
@@ -107,7 +107,7 @@ class ExamRoomController extends Controller
         }
     }
 
-    private function createExamQA($exam, $i)
+    private function createExamQA($exam, $j)
     {
         do {
             $qa = QA::inRandomOrder()->first();
@@ -120,7 +120,7 @@ class ExamRoomController extends Controller
         ExamQA::create([
             'exam_id' => $exam->id,
             'qa_id' => $qa->id,
-            'index' => $i,
+            'index' => $j,
         ]);
     }
 
