@@ -29,4 +29,28 @@ class ExamRoom extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function isBeforeStartTime() {
+        if (now() < $this->start_time) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function isAfterEndTime() {
+        if (now() > $this->end_time) {
+            return true;
+        }
+        return false;
+    }
+
+    public function checkExamTime() {
+        if ($this->isBeforeStartTime()) {
+            return false;
+        }
+        if ($this->isAfterEndTime()) {
+            return false;
+        }
+        return true;
+    }
 }

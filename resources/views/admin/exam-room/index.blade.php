@@ -88,6 +88,7 @@
                                                 @endcan
 
                                                 @can('Thi')
+                                                @if ($item->checkExamTime())
                                                 <li class="list-inline-item px">
                                                     <form method="post" action="{{ route('exams.store-exam', $item->id) }}">
                                                         @csrf
@@ -95,6 +96,7 @@
                                                         <button type="submit" class="btn btn-primary">Thi</button>
                                                     </form>
                                                 </li>
+                                                @endif
                                                 @endcan
                                             </ul>
                                         </td>

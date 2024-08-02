@@ -19,4 +19,13 @@ class ExamUser extends Model
     {
         return $this->belongsTo(ExamRoom::class);
     }
+    
+    public function qaResult()
+    {
+        return $this->hasMany(QaResult::class);
+    }
+
+    public function calculateExamScore() {
+        return $this->qaResult->where('is_correct', true)->count();
+    }
 }

@@ -47,9 +47,10 @@
                         @include('admin.exam._form')
 
                         <div class="row mt-3">
-                            <div class="col-lg-10">
+                            <div class="col">
                                 <button type="button" id='run' class="btn btn-primary">Chạy code</button>
                                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Xem thông báo</button>
+                                <button type="button" class="btn btn-success waves-effect waves-light float-end" onclick="submitExam()">Nộp bài</button>
                                 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                                     <div class="offcanvas-header">
                                         <h5 id="offcanvasBottomLabel"></h5>
@@ -95,7 +96,6 @@
         </div>
     </div>
     <!-- end row -->
-
 @endsection
 @section('script')
     <!-- bootstrap datepicker -->
@@ -114,6 +114,9 @@
 
     <!-- init js -->
     <script src="{{ asset('assets\js\pages\ecommerce-select2.init.js') }}"></script>
+
+    <!-- Sweet Alerts js -->
+    <script src="{{ asset('/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script src="https://www.unpkg.com/ace-builds@latest/src-noconflict/ace.js"></script>
     <script>
@@ -138,10 +141,10 @@
 // }
         });
 
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        var examUserId = $('input[name="exam_user_id"]').val()
         $(document).ready(function () {
             $('#run').click(function() {
-                var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                var examUserId = $('input[name="exam_user_id"]').val()
                 var qaId = $('input[name="qa_id"]').val()
 
                 $.ajax({
@@ -208,17 +211,14 @@
                 let offcanvas = new bootstrap.Offcanvas($(`#offcanvasBottom`)).show();
             }
 
-
-            var deadline = new Date("{{ $examRoom->end_time }}").getTime();
-
             var interval = setInterval(function() {
                 var now = new Date().getTime();
+                var deadline = new Date("{{ $examRoom->end_time }}").getTime();
                 var timeLeft = deadline - now;
 
                 if (timeLeft <= 0) {
                     clearInterval(interval);
-                    alert("Đã hết thời gian làm bài.")
-                    // document.getElementById('exam-form').submit(); // submit form when time is up
+                    submitExam();
                 } else {
                     // Update countdown display
                     var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
@@ -226,7 +226,45 @@
                     document.getElementById('countdown').innerHTML = "Thời gian còn lại: " + minutes + "m " + seconds + "s ";
                 }
             }, 1000);
+
         })
+        function submitExam() {
+            $.ajax({
+                url: `{{ route('exams.calculate-exam-score') }}`,
+                type: "POST",
+                data: {
+                    _token: csrfToken,
+                    exam_user_id: examUserId,
+                },
+                success: function (respon) {
+                    point = respon.data
+                    Swal.fire({
+                        title: "Đã hết thời gian làm bài thi!",
+                        icon: "info",
+                        html: `Bạn đã đạt được ${point} điểm.`,
+                        timer: 60000,
+                        timerProgressBar: true,
+                        allowOutsideClick: false,
+                        willClose: () => {
+                            window.location = '/admin/exam_rooms'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed === true || result.dismiss === Swal.DismissReason.timer) {
+                            window.location = '/admin/exam_rooms'
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 400) {
+                        alert('Lỗi code!!!');
+                    }
+                    if (xhr.status == 500) {
+                        alert('Lỗi server!!!');
+                    }
+                }
+            })
+
+        }
     </script>
 @endsection
 
@@ -235,4 +273,7 @@
     <link href="{{ URL::asset('/assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <!-- select2 css -->
     <link href="{{ asset('assets\libs\select2\select2.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- Sweet Alert-->
+    <link href="{{ asset('/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection

@@ -26,10 +26,10 @@ class ExamController extends Controller
         }
 
         $examRoom = $examUser->examRoom;
-        if (now() < $examRoom->start_time) {
+        if ($examRoom->isBeforeStartTime()) {
             return redirect()->back()->with('alert-error', 'Chưa tới giờ thi.');
         }
-        if (now() > $examRoom->end_time) {
+        if ($examRoom->isAfterEndTime()) {
             return redirect()->back()->with('alert-error', 'Đã hết giờ thi.');
         }
 
@@ -39,6 +39,9 @@ class ExamController extends Controller
             'exam_id' => $examUser->exam_id,
             'index' => $questionIndex,
         ])->first();
+        if (empty($examQA)) {
+            abort(404);
+        }
 
         $result = QaResult::where([
             'exam_user_id' => $examUserId,
@@ -236,5 +239,14 @@ class ExamController extends Controller
     public function destroy(Exam $exam)
     {
         //
+    }
+
+    public function calculateExamScore(Request $request) {
+        $examUser = ExamUser::find($request->exam_user_id);
+        if (empty($examUser)) {
+            return $this->responseError(Response::HTTP_BAD_REQUEST, null);
+        }
+
+        return $this->responseSuccess(Response::HTTP_OK, $examUser->calculateExamScore());
     }
 }

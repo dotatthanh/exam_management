@@ -29,6 +29,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        Route::post('/exams/calculate-exam-score', [ExamController::class, 'calculateExamScore'])->name('exams.calculate-exam-score');
         Route::post('/exams/store-answer', [ExamController::class, 'storeAnswer'])->name('exams.store-answer');
 
         Route::post('/exams/store-exam/{examRoomId}', [ExamController::class, 'storeExam'])->name('exams.store-exam');
