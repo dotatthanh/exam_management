@@ -42,6 +42,6 @@ class ExamUser extends Model
 
     public function calculateExamScore()
     {
-        return $this->qaResult->where('is_correct', true)->count();
+        return $this->qaResult->where('is_correct', true)->count() * 2;
     }
 }

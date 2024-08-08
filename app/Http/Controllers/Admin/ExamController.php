@@ -176,7 +176,7 @@ class ExamController extends Controller
 
                         proc_close($process);
 
-                        $answer = nl2br($output); // Sử dụng nl2br để hiển thị xuống dòng
+                        $answer = $this->sanitizeInput(nl2br($output)); // Sử dụng nl2br để hiển thị xuống dòng
                         if (strcmp($answer, $qa->answer) == 0) {
                             $result->update(['is_correct' => true]);
                         } else {
@@ -199,6 +199,20 @@ class ExamController extends Controller
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, null, 'Có lỗi xảy ra!');
         }
+    }
+
+    public function sanitizeInput($input)
+    {
+        // Loại bỏ các thẻ HTML
+        $cleaned = strip_tags($input);
+
+        // Loại bỏ các ký tự đặc biệt như xuống dòng và khoảng trắng thừa
+        $cleaned = preg_replace('/[\r\n\t]+/', '', $cleaned);
+
+        // Loại bỏ khoảng trắng thừa ở đầu và cuối chuỗi
+        $cleaned = trim($cleaned);
+
+        return $cleaned;
     }
 
     /**
