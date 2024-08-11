@@ -76,13 +76,7 @@ class ExamRoomController extends Controller
         try {
             DB::beginTransaction();
 
-            $user = auth()->user();
-            $params = $request->all();
-            $params['start_time'] = Carbon::createFromFormat('H:i', $request->start_time);
-            $params['end_time'] = Carbon::createFromFormat('H:i', $request->end_time);
-            if (! $user->hasRole('Admin')) {
-                $params['user_id'] = $user->id;
-            }
+            $params = $this->handleRequest($request);
             $examRoom = ExamRoom::create($params);
 
             for ($i = 1; $i <= $params['exam_quantity']; $i++) {
@@ -98,13 +92,25 @@ class ExamRoomController extends Controller
 
             DB::commit();
 
-            return redirect()->route('exam_rooms.index')->with('alert-success', 'Thêm câu hỏi và đáp án thành công!');
+            return redirect()->route('exam_rooms.index')->with('alert-success', 'Thêm phòng thi thành công!');
         } catch (Exception $e) {
-            dd($e);
             DB::rollback();
 
-            return redirect()->back()->with('alert-error', 'Thêm câu hỏi và đáp án thất bại!');
+            return redirect()->back()->with('alert-error', 'Thêm phòng thi thất bại!');
         }
+    }
+
+    private function handleRequest($request)
+    {
+        $user = auth()->user();
+        $params = $request->all();
+        $params['start_time'] = Carbon::createFromFormat('H:i', $request->start_time);
+        $params['end_time'] = Carbon::createFromFormat('H:i', $request->end_time);
+        if (! $user->hasRole('Admin')) {
+            $params['user_id'] = $user->id;
+        }
+
+        return $params;
     }
 
     private function createExamQA($exam, $j)
@@ -161,16 +167,16 @@ class ExamRoomController extends Controller
     {
         try {
             DB::beginTransaction();
-
-            $examRoom->update($request->all());
+            $params = $this->handleRequest($request);
+            $examRoom->update($params);
 
             DB::commit();
 
-            return redirect()->route('examRooms.index')->with('alert-success', 'Sửa câu hỏi và đáp án thành công!');
+            return redirect()->route('exam_rooms.index')->with('alert-success', 'Sửa phòng thi thành công!');
         } catch (Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('alert-error', 'Sửa câu hỏi và đáp án thất bại!');
+            return redirect()->back()->with('alert-error', 'Sửa phòng thi thất bại!');
         }
     }
 
@@ -188,11 +194,11 @@ class ExamRoomController extends Controller
 
             DB::commit();
 
-            return redirect()->route('examRooms.index')->with('alert-success', 'Xóa câu hỏi và đáp án thành công!');
+            return redirect()->route('exam_rooms.index')->with('alert-success', 'Xóa phòng thi thành công!');
         } catch (Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('alert-error', 'Xóa câu hỏi và đáp án thất bại!');
+            return redirect()->back()->with('alert-error', 'Xóa phòng thi thất bại!');
         }
     }
 }

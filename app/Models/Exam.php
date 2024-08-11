@@ -14,5 +14,5 @@ class Exam extends Model
         'code',
     ];
 
-    const TOTAL_QUESTIONS = 10;
+    const TOTAL_QUESTIONS = 5;
 }

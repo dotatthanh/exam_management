@@ -20,9 +20,9 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Cập nhật lớp học</h4>
 
-                    <form method="POST" action="{{ route('majors.update', $data_edit->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('classes.update', $data_edit->id) }}" enctype="multipart/form-data">
                         @method('PUT')
-                        @include('admin.major._form', ['routeType' => 'edit'])
+                        @include('admin.class._form', ['routeType' => 'edit'])
 
                     </form>
                 </div>
