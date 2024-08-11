@@ -177,6 +177,7 @@ class ExamController extends Controller
                         proc_close($process);
 
                         $answer = nl2br($output); // Sử dụng nl2br để hiển thị xuống dòng
+                        // dd($answer, $qa->answer);
                         if (strcmp($answer, $qa->answer) == 0) {
                             $result->update(['is_correct' => true]);
                         } else {

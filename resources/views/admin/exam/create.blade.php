@@ -64,7 +64,7 @@
                         <div class="row">
                             <nav aria-label="...">
                                 <ul class="pagination">
-                                    @for ($i = 1; $i <= 10; $i++)
+                                    @for ($i = 1; $i <= 5; $i++)
                                         @php
                                             $active = '';
                                             $current = false;
