@@ -49,7 +49,7 @@
         <div class="form-group mb-3">
             <label for="start_time">Giờ bắt đầu <span class="text-danger">*</span></label>
             <div class="input-group" id="timepicker-input-group2">
-                <input type="text" name="start_time" class="form-control timepicker2" data-provide="timepicker">
+                <input type="text" name="start_time" class="form-control timepicker2" data-provide="timepicker" value="{{ old('start_time', $data_edit->start_time ?? '') }}">
 
                 <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
             </div>
@@ -59,7 +59,7 @@
         <div class="form-group mb-3">
             <label for="end_time">Giờ kết thúc <span class="text-danger">*</span></label>
             <div class="input-group" id="timepicker-input-group2">
-                <input type="text" name="end_time" class="form-control timepicker2" data-provide="timepicker">
+                <input type="text" name="end_time" class="form-control timepicker2" data-provide="timepicker" value="{{ old('end_time', $data_edit->end_time ?? '') }}">
 
                 <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
             </div>

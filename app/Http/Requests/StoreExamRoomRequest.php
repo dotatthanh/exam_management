@@ -68,4 +68,12 @@ class StoreExamRoomRequest extends FormRequest
 
         return $messages;
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'start_time' => formatDate($this->input('start_time'), 'H:i'),
+            'end_time' => formatDate($this->input('end_time'), 'H:i'),
+        ]);
+    }
 }
