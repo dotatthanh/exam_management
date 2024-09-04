@@ -140,11 +140,11 @@ class ExamController extends Controller
             $result = $this->handleResult($request);
             $qa = $result->qa;
 
-            $relativePath = 'uploads/exam';
-            $sourceFileName = 'test.c';
-            $executableFileName = 'test';
-            $sourceFilePath = public_path("$relativePath/$sourceFileName");
-            $outputFilePath = public_path("$relativePath/$executableFileName");
+            $executableFileName = "result".$result->id; // tên file biên dịch .exe
+            $sourceFileName = $executableFileName.'.c'; // tên file code
+            $relativePath = "uploads/exam/".$result->exam_user_id;
+            $sourceFilePath = public_path("$relativePath/$sourceFileName"); // file path của file biên dịch .exe
+            $outputFilePath = public_path("$relativePath/$executableFileName"); // file path của file code
             Storage::disk('public_uploads')->put("/exam/$sourceFileName", $request->answer);
 
             if (Storage::disk('public_uploads')->exists("/exam/$sourceFileName")) {
