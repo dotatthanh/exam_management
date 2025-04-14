@@ -145,9 +145,9 @@ class ExamController extends Controller
             $relativePath = "uploads/exam/".$result->exam_user_id;
             $sourceFilePath = public_path("$relativePath/$sourceFileName"); // file path của file biên dịch .exe
             $outputFilePath = public_path("$relativePath/$executableFileName"); // file path của file code
-            Storage::disk('public_uploads')->put("/exam/$sourceFileName", $request->answer);
+            Storage::disk('public_uploads')->put("/exam/$result->exam_user_id/$sourceFileName", $request->answer);
 
-            if (Storage::disk('public_uploads')->exists("/exam/$sourceFileName")) {
+            if (Storage::disk('public_uploads')->exists("/exam/$result->exam_user_id/$sourceFileName")) {
                 $compile_output = shell_exec("gcc $sourceFilePath -o $outputFilePath 2>&1");
                 if ($compile_output) {
                     $result->update(['is_correct' => false]);
@@ -177,7 +177,6 @@ class ExamController extends Controller
                         proc_close($process);
 
                         $answer = $this->sanitizeInput(nl2br($output)); // Sử dụng nl2br để hiển thị xuống dòng
-                        // dd($answer, $qa->answer);
                         if (strcmp($answer, $qa->answer) == 0) {
                             $result->update(['is_correct' => true]);
                         } else {

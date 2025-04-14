@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\ExamResultController;
@@ -25,11 +24,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::prefix('admin')->group(function () {
     Route::middleware(['auth'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
         Route::post('/exams/calculate-exam-score', [ExamController::class, 'calculateExamScore'])->name('exams.calculate-exam-score');
         Route::post('/exams/store-answer', [ExamController::class, 'storeAnswer'])->name('exams.store-answer');
 
