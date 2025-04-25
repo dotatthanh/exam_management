@@ -148,6 +148,7 @@ class ExamController extends Controller
             Storage::disk('public_uploads')->put("/exam/$result->exam_user_id/$sourceFileName", $request->answer);
 
             if (Storage::disk('public_uploads')->exists("/exam/$result->exam_user_id/$sourceFileName")) {
+                putenv("PATH=C:\\MinGW\\bin;" . getenv("PATH"));
                 $compile_output = shell_exec("gcc $sourceFilePath -o $outputFilePath 2>&1");
                 if ($compile_output) {
                     $result->update(['is_correct' => false]);
