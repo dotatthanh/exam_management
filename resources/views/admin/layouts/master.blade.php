@@ -32,7 +32,7 @@
                 <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
-            @include('admin.layouts.footer')
+            {{-- @include('admin.layouts.footer') --}}
         </div>
         <!-- end main content-->
     </div>
