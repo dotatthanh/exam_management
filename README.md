@@ -1,13 +1,13 @@
 ## 🚀 Cài đặt
 
-### 2. Cài đặt Composer
+### 1. Cài đặt Composer
 
 Cài đặt các package PHP cần thiết:
 
 ```bash
 composer install
 
-### 3. Tạo file cấu hình môi trường `.env`
+### 2. Tạo file cấu hình môi trường `.env`
 
 Sao chép file `.env.example` thành `.env`
 Sau đó mở file `.env` và cấu hình các thông tin kết nối cơ bản, ví dụ:
@@ -24,18 +24,19 @@ DB_DATABASE=ten_database
 DB_USERNAME=ten_user
 DB_PASSWORD=mat_khau
 
-### 4. Tạo khóa ứng dụng
+### 3. Tạo khóa ứng dụng
 
 Tạo khóa mã hóa ứng dụng:
 php artisan key:generate
 
-### 5. Chạy migration và seed dữ liệu (nếu có)
+### 4. Chạy migration và seed dữ liệu (nếu có)
 
 Thiết lập bảng trong database và tạo dữ liệu mẫu:
 php artisan migrate –seed
 
-### 6. Khởi động server Laravel
+### 5. Khởi động server Laravel
 
 Chạy ứng dụng ở môi trường local:
 php artisan serve
 Sau đó mở trình duyệt truy cập địa chỉ: http://127.0.0.1:8000
+```
